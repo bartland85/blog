@@ -1,0 +1,8 @@
+{
+    "require": {
+        "silex/silex": "~1.2",
+        "components/jquery": "dev-master",
+        "twig/twig": "~1.0",
+        "ptejada/uflex": "dev-master"
+    }
+}
