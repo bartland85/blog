@@ -48,10 +48,10 @@ $app->get('/', function () use($app, $db, $user, $config){
             $output[] = $post;
         }
            
-    return $app['twig']->render('posts.twig', array('posts'=>$output, 'account_link'=>$config['account_link'], 'account_text'=>$config['account_text']));
+    return $app['twig']->render('posts.twig', array('posts'=>$output, 'config'=>$config));
 });
 
-$app->get('/post/{id}', function ($id) use($app, $db, $user){
+$app->get('/post/{id}', function ($id) use($app, $db, $user, $config){
 
         $q = $db->prepare('select * from posts where id=:id limit 1');
         
@@ -59,21 +59,21 @@ $app->get('/post/{id}', function ($id) use($app, $db, $user){
         
         $post = $q->fetch();
 
-       return $app['twig']->render('post.twig', array('post'=>$post));
+       return $app['twig']->render('post.twig', array('post'=>$post, 'config'=>$config));
 });
 
 
 
-$app->get('/login/', function () use($app, $db, $user){
+$app->get('/login/', function () use($app, $db, $user, $config){
             
         
         $errors = '';
-       return $app['twig']->render('login.twig', array('errors'=>$errors));
+       return $app['twig']->render('login.twig', array('errors'=>$errors, 'config'=>$config));
 });
 
 
 
-$app->post('/login/', function (\Symfony\Component\HttpFoundation\Request $request) use($app, $db, $user){
+$app->post('/login/', function (\Symfony\Component\HttpFoundation\Request $request) use($app, $db, $user, $config){
     
      
         $login = $request->get('login');
@@ -92,22 +92,22 @@ $app->post('/login/', function (\Symfony\Component\HttpFoundation\Request $reque
             echo $errors;    
         }
 
-       return $app['twig']->render('login.twig', array('errors'=>$errors));
+       return $app['twig']->render('login.twig', array('errors'=>$errors, 'config'=>$config));
 });
 
 
 
-$app->get('/register/', function () use($app, $db, $user){
+$app->get('/register/', function () use($app, $db, $user, $config){
     
     
         
         $errors = '';
-       return $app['twig']->render('register.twig', array('errors'=>$errors));
+       return $app['twig']->render('register.twig', array('errors'=>$errors, 'config'=>$config));
 });
 
 
 
-$app->post('/register/', function (\Symfony\Component\HttpFoundation\Request $request) use($app, $db, $user){
+$app->post('/register/', function (\Symfony\Component\HttpFoundation\Request $request) use($app, $db, $user, $config){
     
         $data = new ptejada\uFlex\Collection($_POST);
         
@@ -134,10 +134,10 @@ $app->post('/register/', function (\Symfony\Component\HttpFoundation\Request $re
             echo $errors;    
         }
 
-       return $app['twig']->render('register.twig', array('errors'=>$errors));
+       return $app['twig']->render('register.twig', array('errors'=>$errors, 'config'=>$config));
 });
 
-$app->get('/logout/', function() use($app, $db, $user){
+$app->get('/logout/', function() use($app, $db, $user, $config){
     
     
     $user->logout();
