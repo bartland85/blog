@@ -65,8 +65,6 @@ $app->get('/post/{id}', function ($id) use($app, $db, $user, $config){
 
 
 $app->get('/login/', function () use($app, $db, $user, $config){
-            
-        
         $errors = '';
        return $app['twig']->render('login.twig', array('errors'=>$errors, 'config'=>$config));
 });
@@ -83,6 +81,7 @@ $app->post('/login/', function (\Symfony\Component\HttpFoundation\Request $reque
         $errors = '';
         if($user->isSigned()){
             $errors = 'OK';
+            return $app->redirect('/blog/');
         }
         else{
             foreach($user->log->getErrors() as $error){
