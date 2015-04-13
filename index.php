@@ -20,6 +20,7 @@ $user->config->database->update(array(
         ));
 $user->start();
 
+
 if($user->isSigned()){
     $account_link = '/blog/logout/';
     $account_text = 'Log Out';
@@ -28,10 +29,15 @@ if($user->isSigned()){
     $account_text = 'Log In';
 }
 
+ $config['account_link'] = $account_link;
+ $config['account_text'] = $account_text;
+
+
+
 $db = new PDO('mysql:host=localhost;dbname=blog','root','');
 
 
-$app->get('/', function () use($app, $db, $user){
+$app->get('/', function () use($app, $db, $user, $config){
     
         
         $posts = $db->query('select * from posts');
@@ -42,7 +48,7 @@ $app->get('/', function () use($app, $db, $user){
             $output[] = $post;
         }
            
-    return $app['twig']->render('posts.twig', array('posts'=>$output, 'account_link'=>$account_link, 'account_text'=>$account_text));
+    return $app['twig']->render('posts.twig', array('posts'=>$output, 'account_link'=>$config['account_link'], 'account_text'=>$config['account_text']));
 });
 
 $app->get('/post/{id}', function ($id) use($app, $db, $user){
