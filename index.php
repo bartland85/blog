@@ -39,7 +39,7 @@ $db = new PDO('mysql:host=localhost;dbname=blog','root','');
 
 $app->get('/', function () use($app, $db, $user, $config){
     
-        
+        var_dump($user->isAdmin());
         $posts = $db->query('select * from posts');
         
         $output='';
