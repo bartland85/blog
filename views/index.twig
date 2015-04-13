@@ -1,44 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <title>Bart's Blog</title>
-        <script src="{{ app.request.basepath }}/js/jquery.js"></script>
-        <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/css/style.css"/>
-        
-    </head>
-    <body>
-         <div class="header">
-            {% block header %}
+{% extends "base.twig" %}
 
-            {% endblock %}
-         </div>
-        
+{% block container %}
 
-        <div class="top_menu">
-            {% block top_menu %}
-            <a href={{ config.account_link }}>{{ config.account_text }}</a>|<a href='/blog/register/'>Register</a>
-            {% endblock %}
-        </div>
-        
-        <div class ="site_body">
-        <div class="container">
-            {% block container %}
-            {% endblock %}
-        </div>
-        
-        <div class="right_column">
-            {% block right_column %}
-            right column
-            {% endblock %}
-        </div>
-        </div>
-        <div class="footer">
-            {% block footer %}
-            footer
-            {% endblock %}
-        </div>
-        
-    </body>
-</html>
+    {% for post in posts %}
+        <div class="post_title"><a href="post/{{ post.id }}">{{ post.title }}</a></div>
+        <div class="post_text">{{ post.text }}</div>
+    {% endfor %}
+
+{% endblock %}
