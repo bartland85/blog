@@ -47,7 +47,7 @@ $app->get('/', function () use($app, $db, $user, $config){
             
             $output[] = $post;
         }
-           
+
     return $app['twig']->render('index.twig', array('posts'=>$output, 'config'=>$config));
 });
 
