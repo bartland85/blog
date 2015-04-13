@@ -22,15 +22,15 @@ $user->start();
 
 
 if($user->isSigned()){
-    $account_link = '/blog/logout/';
-    $account_text = 'Log Out';
+    $config['account_link'] = '/blog/logout/';
+    $config['account_text'] = 'Log Out';
+    $config['register_button'] = '';
 }else{
-    $account_link = '/blog/login/';
-    $account_text = 'Log In';
+    $config['account_link'] = '/blog/login/';
+    $config['account_text'] = 'Log In';
+    $config['register_button'] = ' | <a href="/blog/register/">Register</a>';
 }
 
- $config['account_link'] = $account_link;
- $config['account_text'] = $account_text;
 
 
 
