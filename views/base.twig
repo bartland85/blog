@@ -21,7 +21,7 @@
 
 <div class="top_menu">
     {% block top_menu %}
-        <a href={{ config.account_link }}>{{ config.account_text }}</a>{{ config.register_button | raw }}
+        <a href={{ config.account_link }}>{{ config.account_text }}</a>{{ config.register_button | raw }}{{ config.new_post_button | raw }}
     {% endblock %}
 </div>
 

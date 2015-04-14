@@ -11,6 +11,8 @@ $app['debug'] = true;
 
 
 $user = new ptejada\uFlex\User();
+
+
 $user->config->database->update(array(
             'host'=>'localhost',
             'name'=>'blog',
@@ -18,13 +20,18 @@ $user->config->database->update(array(
             'Password'=>''
             
         ));
-$user->start();
 
+$user->start();
 
 if($user->isSigned()){
     $config['account_link'] = '/blog/logout/';
     $config['account_text'] = 'Log Out';
     $config['register_button'] = '';
+    if($user->isAdmin()){
+        $config['new_post_button'] = ' | <a href="/blog/new_post/">Add new post</a>';
+    }else{
+        $config['new_post_button'] = '';
+    }
 }else{
     $config['account_link'] = '/blog/login/';
     $config['account_text'] = 'Log In';
@@ -39,7 +46,7 @@ $db = new PDO('mysql:host=localhost;dbname=blog','root','');
 
 $app->get('/', function () use($app, $db, $user, $config){
     
-        var_dump($user->isAdmin());
+
         $posts = $db->query('select * from posts');
         
         $output='';
