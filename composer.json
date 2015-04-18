@@ -3,6 +3,10 @@
         "silex/silex": "~1.2",
         "components/jquery": "dev-master",
         "twig/twig": "~1.0",
-        "ptejada/uflex": "dev-master"
+        "ptejada/uflex": "dev-master",
+        "symfony/form": "~2.6",
+        "symfony/twig-bridge": "~2.6",
+        "symfony/translation": "~2.6",
+        "symfony/security-csrf": "~2.6"
     }
 }

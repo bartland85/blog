@@ -9,6 +9,10 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 ));
 $app['debug'] = true;
 
+ use Silex\Provider\FormServiceProvider;
+
+ $app->register(new FormServiceProvider());
+
 
 $user = new ptejada\uFlex\User();
 
@@ -27,6 +31,8 @@ if($user->isSigned()){
     $config['account_link'] = '/blog/logout/';
     $config['account_text'] = 'Log Out';
     $config['register_button'] = '';
+    $config['user_id'] = $user->__get('ID');
+
     if($user->isAdmin()){
         $config['new_post_button'] = ' | <a href="/blog/new_post/">Add new post</a>';
     }else{
@@ -36,6 +42,8 @@ if($user->isSigned()){
     $config['account_link'] = '/blog/login/';
     $config['account_text'] = 'Log In';
     $config['register_button'] = ' | <a href="/blog/register/">Register</a>';
+
+    $config['new_post_button'] = '';
 }
 
 
@@ -149,5 +157,32 @@ $app->get('/logout/', function() use($app, $db, $user, $config){
     $user->logout();
     return $app->redirect('/blog/');
 });
+
+ $app->match('/new_post/', function(\Symfony\Component\HttpFoundation\Request $request)use($app, $db, $user, $config){
+
+
+     $form = $app['form.factory']->createBuilder('form')
+         ->add('title', 'text', array('label'=>'Post\'s title', 'required'=>true))
+         ->add('text', 'textarea', array('label'=>'Post\'s text',  'required'=>false))
+         ->getForm();
+
+     $form->handleRequest($request);
+
+
+
+     if($form->isValid()){
+
+
+         $insert = $db->prepare('insert into posts(title, text, user_id, datetime)values(:title, :text, :user_id, now())');
+
+         $insert->execute(array(
+                                ':title'=>$request->request->get('form')['title'],
+                                ':text'=>$request->request->get('form')['text'],
+                                ':user_id'=>$config['user_id'])
+                            );
+     }
+
+        return $app['twig']->render('new_post.twig', array('config'=>$config, 'form'=>$form->createView()));
+ });
 
 $app->run();
