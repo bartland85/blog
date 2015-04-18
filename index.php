@@ -1,5 +1,6 @@
  <?php
 
+ require_once 'lib/config/constants.php';
 require_once 'vendor/autoload.php';
 
 $app = new Silex\Application();
@@ -15,6 +16,8 @@ $app['debug'] = true;
 
 
 $user = new ptejada\uFlex\User();
+
+
 
 
 $user->config->database->update(array(
@@ -55,7 +58,7 @@ $db = new PDO('mysql:host=localhost;dbname=blog','root','');
 $app->get('/', function () use($app, $db, $user, $config){
     
 
-        $posts = $db->query('select * from posts');
+        $posts = $db->query('select * from posts ORDER BY datetime DESC ');
         
         $output='';
         foreach ($posts as $post){
@@ -68,13 +71,12 @@ $app->get('/', function () use($app, $db, $user, $config){
 
 $app->get('/post/{id}', function ($id) use($app, $db, $user, $config){
 
-        $q = $db->prepare('select * from posts where id=:id limit 1');
-        
-        $q->execute(array('id'=>$id));
-        
-        $post = $q->fetch();
 
-       return $app['twig']->render('post.twig', array('post'=>$post, 'config'=>$config));
+        $post = new \Bart\Post();
+
+    $post->getById($id);
+
+       return $app['twig']->render('post.twig', array('post'=>$f, 'config'=>$config));
 });
 
 

@@ -12,7 +12,7 @@
 namespace Symfony\Component\HttpFoundation;
 
 /**
- * Represents a cookie
+ * Represents a cookie.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  *
@@ -84,12 +84,12 @@ class Cookie
         $str = urlencode($this->getName()).'=';
 
         if ('' === (string) $this->getValue()) {
-            $str .= 'deleted; expires='.gmdate("D, d-M-Y H:i:s T", time() - 31536001);
+            $str .= 'deleted; expires='.gmdate('D, d-M-Y H:i:s T', time() - 31536001);
         } else {
             $str .= urlencode($this->getValue());
 
             if ($this->getExpiresTime() !== 0) {
-                $str .= '; expires='.gmdate("D, d-M-Y H:i:s T", $this->getExpiresTime());
+                $str .= '; expires='.gmdate('D, d-M-Y H:i:s T', $this->getExpiresTime());
             }
         }
 
@@ -197,7 +197,7 @@ class Cookie
     }
 
     /**
-     * Whether this cookie is about to be cleared
+     * Whether this cookie is about to be cleared.
      *
      * @return bool
      *

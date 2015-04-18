@@ -8,5 +8,11 @@
         "symfony/twig-bridge": "~2.6",
         "symfony/translation": "~2.6",
         "symfony/security-csrf": "~2.6"
+    },
+
+    "autoload": {
+        "psr-0": {"Bart": "lib/"},
+        "psr-1": {"Config": "lib/"}
     }
 }
+
