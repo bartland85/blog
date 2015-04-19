@@ -1,7 +1,9 @@
  <?php
 
- require_once 'lib/config/constants.php';
+ require_once 'lib/Config/define.php';
 require_once 'vendor/autoload.php';
+
+
 
 $app = new Silex\Application();
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
@@ -56,27 +58,22 @@ $db = new PDO('mysql:host=localhost;dbname=blog','root','');
 
 
 $app->get('/', function () use($app, $db, $user, $config){
-    
 
-        $posts = $db->query('select * from posts ORDER BY datetime DESC ');
-        
-        $output='';
-        foreach ($posts as $post){
-            
-            $output[] = $post;
-        }
+    $postList = new \Bart\PostList();
 
-    return $app['twig']->render('index.twig', array('posts'=>$output, 'config'=>$config));
+    $posts = $postList->getNewest2Limit();
+
+
+    return $app['twig']->render('index.twig', array('posts'=>$posts, 'config'=>$config));
 });
 
 $app->get('/post/{id}', function ($id) use($app, $db, $user, $config){
 
-
         $post = new \Bart\Post();
 
-    $post->getById($id);
+        $post->getById($id);
 
-       return $app['twig']->render('post.twig', array('post'=>$f, 'config'=>$config));
+       return $app['twig']->render('post.twig', array('post'=>$post, 'config'=>$config));
 });
 
 

@@ -11,8 +11,10 @@
     },
 
     "autoload": {
-        "psr-0": {"Bart": "lib/"},
-        "psr-1": {"Config": "lib/"}
+        "psr-4": {
+          "Bart\\": "lib/",
+          "Config\\": "lib/"
+        }
     }
 }
 

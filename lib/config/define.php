@@ -1,4 +1,4 @@
-<?
+<?php
 
 define('_DBHOST', 'localhost');
 define('_DBNAME', 'blog');

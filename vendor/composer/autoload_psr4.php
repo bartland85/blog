@@ -7,4 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'ptejada\\uFlex\\' => array($vendorDir . '/ptejada/uflex/src'),
+    'Config\\' => array($baseDir . '/lib'),
+    'Bart\\' => array($baseDir . '/lib'),
 );
