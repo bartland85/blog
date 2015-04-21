@@ -4,7 +4,6 @@
 require_once 'vendor/autoload.php';
 
 
-
 $app = new Silex\Application();
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     
@@ -39,7 +38,7 @@ if($user->isSigned()){
     $config['user_id'] = $user->__get('ID');
 
     if($user->isAdmin()){
-        $config['new_post_button'] = ' | <a href="/blog/new_post/">Add new post</a>';
+        $config['new_post_button'] = ' | <a href="/blog/edit/">Add new post</a>';
     }else{
         $config['new_post_button'] = '';
     }
@@ -63,6 +62,11 @@ $app->get('/', function () use($app, $db, $user, $config){
 
     $posts = $postList->getNewest2Limit();
 
+    foreach($posts as $k=>$post){
+        if($post->getUserId() == $user->getProperty('ID')){
+            $post->setEditable(true);
+        }
+    }
 
     return $app['twig']->render('index.twig', array('posts'=>$posts, 'config'=>$config));
 });
@@ -157,31 +161,50 @@ $app->get('/logout/', function() use($app, $db, $user, $config){
     return $app->redirect('/blog/');
 });
 
- $app->match('/new_post/', function(\Symfony\Component\HttpFoundation\Request $request)use($app, $db, $user, $config){
+ $app->match('/edit/{id}', function(\Symfony\Component\HttpFoundation\Request $request, $id)use($app, $db, $user, $config){
 
+     $post = new \Bart\Post();
+    if($id > 0){
+
+        $post->getById($id);
+    }
 
      $form = $app['form.factory']->createBuilder('form')
-         ->add('title', 'text', array('label'=>'Post\'s title', 'required'=>true))
-         ->add('text', 'textarea', array('label'=>'Post\'s text',  'required'=>false))
+         ->add('title', 'text', array('label'=>'Post\'s title', 'required'=>true, 'data'=>$post->getTitle()))
+         ->add('text', 'textarea', array('label'=>'Post\'s text',  'required'=>false, 'data'=>$post->getText()))
+         ->add('id', 'hidden', array('required'=>false, 'data'=>$post->getId()))
          ->getForm();
 
      $form->handleRequest($request);
 
 
-
      if($form->isValid()){
 
+         $params = array(
+             ':title'=>$request->request->get('form')['title'],
+             ':text'=>$request->request->get('form')['text'],
+             ':user_id'=>$config['user_id']
+         );
 
-         $insert = $db->prepare('insert into posts(title, text, user_id, datetime)values(:title, :text, :user_id, now())');
+        if($request->get('id') > 0){
 
-         $insert->execute(array(
-                                ':title'=>$request->request->get('form')['title'],
-                                ':text'=>$request->request->get('form')['text'],
-                                ':user_id'=>$config['user_id'])
-                            );
+            $insert = $db->prepare('update posts set title=:title, text=:text, user_id=:user_id where id=:id');
+
+            $params[':id'] = $id;
+
+            $operation = 'update';
+
+        }else {
+            $insert = $db->prepare('insert into posts(title, text, user_id, datetime)values(:title, :text, :user_id, now())');
+            $operation = 'insert';
+        }
+         $insert->execute($params);
+
+         if($operation == 'insert')
+            return $app->redirect('/blog/edit/' . $db->lastInsertId());
      }
 
-        return $app['twig']->render('new_post.twig', array('config'=>$config, 'form'=>$form->createView()));
- });
+        return $app['twig']->render('edit.twig', array('config'=>$config, 'form'=>$form->createView()));
+ })->value('id', '-1');
 
 $app->run();

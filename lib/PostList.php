@@ -77,7 +77,12 @@ class PostList {
 
         $data = $db->query('select * from posts ORDER BY datetime DESC limit :limit', array('limit'=>$this->listLimit));
 
-        return $data;
+        foreach($data as $post){
+            $posts[] = new \Bart\Post($post['id'], $post['title'], $post['text'], $post['user_id'], $post['datetime']);
+        }
+
+
+        return $posts;
     }
 
 

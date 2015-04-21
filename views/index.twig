@@ -5,6 +5,9 @@
         <div class="post_date">{{ post.datetime }}</div>
         <div class="post_title"><a href="post/{{ post.id }}">{{ post.title }}</a></div>
         <div class="post_text">{{ post.text }}</div>
+        {% if post.editable %}
+            {% embed 'edit_buttons.twig' %}{% endembed %}
+        {% endif %}
         <hr>
     {% endfor %}
 
