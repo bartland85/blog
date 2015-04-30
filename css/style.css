@@ -1,39 +1,32 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : 2014-12-22, 20:37:12
-    Author     : Bart
-*/
 
-.container{
-    margin: auto;
-    float:left;
-    width: 800px;
-    border: 1px solid brown;
+body{
+    background-color: #222222 !important;
+}
+.main{
+    background-color: #000000;
+}
+.logo, .logo a{
+    font-size: 50px;
+    font-family: LeagueGothic;
+    color: #a94442;
+
 }
 
-.right_column{
-    border: 1px solid tomato;
-    float:left;
+.league_gothic{
+    font-family: LeagueGothic;
 }
 
-.site_body{
-
-    margin: 0 auto;
-    width: 1000px;
+.default_font{
+    font-family: LeagueGothic;
+    color: #a94442;
 }
 
-.header{
-    width:900px;
+.login_buttons, .login_buttons a{
+    font-family: LeagueGothic;
+    color: #a94442;
 }
 
-.footer{
-    width:800px;
-    clear: both;
+@font-face {
+    font-family: LeagueGothic;
+    src: url("fonts/league_gothic/LeagueGothic-Regular.otf") format("opentype");
 }
-
-
-

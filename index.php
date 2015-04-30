@@ -207,4 +207,13 @@ $app->get('/logout/', function() use($app, $db, $user, $config){
         return $app['twig']->render('edit.twig', array('config'=>$config, 'form'=>$form->createView()));
  })->value('id', '-1');
 
+ $app->get('/delete/{id}', function()use($app, $db, $user, $config){
+
+     $error = 'Oooops1';
+    throw new Symfony\Component\Security\Core\Exception\AccessDeniedException($error);
+
+ });
+
+
+
 $app->run();
